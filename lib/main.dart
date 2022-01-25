@@ -1,7 +1,27 @@
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 void main() {
   runApp(const MyApp());
+}
+
+void doGet() {
+  http
+      .get(Uri.parse(
+          "https://opentdb.com/api.php?amount=10&category=18&type=boolean"))
+      .then((response) {
+    var jsondata = json.decode(response.body);
+    var questions = jsondata['results'];
+
+    // Qui inserisci il codice opportuno per gestire lo stato:
+    setState(() {});
+
+    // debug (esempi di stampa dei dati contenuti nel json)
+    print("First question: " + questions[0]['question']);
+    print("First correct answer: " + questions[0]['correct_answer']);
+    print("Category: " + questions[0]['category']);
+  });
 }
 
 class MyApp extends StatelessWidget {
