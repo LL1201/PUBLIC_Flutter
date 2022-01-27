@@ -13,19 +13,18 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'Loner Quiz',
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        primarySwatch: Colors.red,
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      home: const MyHomePage(title: 'Loner Quiz Home Page'),
     );
   }
 }
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({Key? key, required this.title}) : super(key: key);
-
-  final String title;
+  final String title;  
 
   @override
   State<MyHomePage> createState() => _MyHomePageState();
@@ -33,11 +32,20 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   int _counter = 0;
+  String answerStr="";
   var questions;
   void _incrementCounter() {
     setState(() {
       _counter++;
     });
+  }
+
+  void checkAnswer(bool answer) {
+    if (answer) {
+      answerStr="true";
+    } else {
+      answerStr="false";
+    }
   }
 
   void doGet() {
@@ -59,8 +67,15 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   @override
-  Widget build(BuildContext context) {
+  void initState() {
     doGet();
+  }
+
+ AlertDialog answerAlert=AlertDialog(
+   title: Text('Risposta'),   
+ )
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         // Here we take the value from the MyHomePage object that was created by
@@ -75,16 +90,29 @@ class _MyHomePageState extends State<MyHomePage> {
           children: <Widget>[
             Text(
               questions[_counter]['question'],
-              style: Theme.of(context).textTheme.headline4,
             ),
+            ElevatedButton(
+              onPressed: () {
+                checkAnswer(true);
+              },
+              child: Text('VERO'),
+              style: ElevatedButton.styleFrom(
+                primary: Colors.green, // Background color
+              ),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                checkAnswer(false);
+              },
+              child: Text('FALSO'),
+              style: ElevatedButton.styleFrom(
+                primary: Colors.red, // Background color
+              ),
+            )
           ],
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
+      // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
 }
