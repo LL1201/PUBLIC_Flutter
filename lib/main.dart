@@ -1,118 +1,183 @@
-import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
+// This app gets data from Firebase RealTime database through http requests
+// https://pub.dev/packages/http
+
 import 'dart:convert';
 
-void main() {
-  runApp(const MyApp());
-}
+import 'Question.dart';
+import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import './textdisplay.dart';
+import './button.dart';
+
+void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
-
   // This widget is the root of your application.
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Loner Quiz',
+      title: 'Loner Quiz App',
       theme: ThemeData(
-        primarySwatch: Colors.red,
+        primarySwatch: Colors.amber,
+        visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: const MyHomePage(title: 'Loner Quiz Home Page'),
+      home: MyHomePage(title: 'Loner Quiz'),
     );
   }
 }
 
 class MyHomePage extends StatefulWidget {
-  const MyHomePage({Key? key, required this.title}) : super(key: key);
-  final String title;  
+  MyHomePage({Key? key, required this.title}) : super(key: key);
+
+  final String title;
 
   @override
-  State<MyHomePage> createState() => _MyHomePageState();
+  _MyHomePageState createState() => _MyHomePageState();
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
-  String answerStr="";
-  var questions;
-  void _incrementCounter() {
+  // Sample url:
+  final baseurl = "https://opentdb.com/api.php?amount=10&category=18";
+
+  List<Question>? _questions = null; // questions data structure
+  List<String>? _answers = null; // answers list
+  var _index = 0;
+
+  // Go to next question:
+  void next() {
+    if (_questions == null || _questions!.length == 0) return;
     setState(() {
-      _counter++;
+      if (_index < _questions!.length - 1)
+        _index++;
+      else
+        _index = 0;
+      // update answers:
+      _answers = List.from(_questions![_index].incorrect);
+      _answers!.add(_questions![_index].correct);
+      _answers!.shuffle();
     });
   }
 
-  void checkAnswer(bool answer) {
-    if (answer) {
-      answerStr="true";
-    } else {
-      answerStr="false";
-    }
+  // Get data
+  void doGet() {
+    http.get(Uri.parse(baseurl)).then((response) {
+      var jsondata = json.decode(response.body);
+      var questions = jsondata['results'];
+
+      // create data structure with questions
+      setState(() {
+        _questions =
+            questions.map<Question>((val) => Question.fromJson(val)).toList();
+        // initialize answer list:
+        _answers = List.from(_questions![_index].incorrect);
+        _answers!.add(_questions![_index].correct);
+        _answers!.shuffle();
+      });
+
+      // debug
+      /*print("First question: " + questions[0]['question']);
+      print("First question: " + questions[0]['correct_answer']);
+      print("category: " + questions[0]['category']);*/
+    });
   }
 
-  void doGet() {
+  // Post data to Firebase
+  void doPost(String postUrl) {
     http
-        .get(Uri.parse(
-            "https://opentdb.com/api.php?amount=10&category=18&type=boolean"))
+        .post(Uri.parse(postUrl),
+            body: json.encode({
+              'name': "Pluto",
+              'email': "pluto@whitehouse.gov",
+              'zipcode': 12364,
+              'id': 0
+            }))
         .then((response) {
       var jsondata = json.decode(response.body);
-      questions = jsondata['results'];
 
-      // Qui inserisci il codice opportuno per gestire lo stato:
-      //setState(() {});
-
-      // debug (esempi di stampa dei dati contenuti nel json)
-      print("First question: " + questions[0]['question']);
-      print("First correct answer: " + questions[0]['correct_answer']);
-      print("Category: " + questions[0]['category']);
+      // debug
+      print("Server response: " + response.statusCode.toString());
     });
   }
 
-  @override
-  void initState() {
-    doGet();
+  // Check if the answer is correct and display an AlertDialog:
+  void _checkAnswer(String ans) {
+    bool correct = false;
+    String msg = "HAI SBAGLIATO!!!!!!!!! ";
+    if (ans == _questions![_index].correct) {
+      msg = "Sarà fortuna?";
+      correct = true;
+    }
+
+    showDialog(
+        context: context,
+        builder: (ctx) => AlertDialog(
+              title: Text('Result'),
+              content: Text(msg),
+              actions: <Widget>[
+                FlatButton(
+                  autofocus: true,
+                  child: Text('OK'),
+                  onPressed: () {
+                    Navigator.of(ctx).pop(true);
+                    if (correct) next();
+                  },
+                )
+              ],
+            ));
   }
 
- AlertDialog answerAlert=AlertDialog(
-   title: Text('Risposta'),   
- )
+  // Return a list of buttons with the answers to put in the screen:
+  List<Widget> _buildAnswerButtons(List<String> ans) {
+    return ans
+        .map<Button>((e) => Button(
+            selectHandler: () => _checkAnswer(e),
+            buttonText: e,
+            color: Colors.orange))
+        .toList();
+  }
+
+  // Load data from Open Trivia DB at the beginning:
+  void initState() {
+    doGet();
+    //assert(_debugLifecycleState == _StateLifecycle.created);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
         title: Text(widget.title),
-      ),
-      body: Center(
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Text(
-              questions[_counter]['question'],
-            ),
-            ElevatedButton(
-              onPressed: () {
-                checkAnswer(true);
-              },
-              child: Text('VERO'),
-              style: ElevatedButton.styleFrom(
-                primary: Colors.green, // Background color
+        actions: <Widget>[
+          FlatButton(
+            textColor: Colors.white,
+            onPressed: () {
+              next();
+            },
+            child: Text(
+              "Next",
+              style: TextStyle(
+                color: Colors.black,
               ),
             ),
-            ElevatedButton(
-              onPressed: () {
-                checkAnswer(false);
-              },
-              child: Text('FALSO'),
-              style: ElevatedButton.styleFrom(
-                primary: Colors.red, // Background color
-              ),
-            )
-          ],
-        ),
+            shape: CircleBorder(side: BorderSide(color: Colors.transparent)),
+          ),
+        ],
       ),
-      // This trailing comma makes auto-formatting nicer for build methods.
+      body: Column(
+        children: [
+          TextDisplay(
+            (_questions != null && _questions![0] != null)
+                ? _questions![_index].question
+                : 'none',
+          ),
+          if (_answers != null && _buildAnswerButtons(_answers!) != null)
+            ..._buildAnswerButtons(_answers!)
+          else
+            const CircularProgressIndicator(), //Text('Load Quiz!'),
+          //Button(selectHandler: next, buttonText: 'next'),
+        ],
+      ),
     );
   }
 }
