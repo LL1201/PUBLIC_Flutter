@@ -50,8 +50,25 @@ class _MyHomePageState extends State<MyHomePage> {
     setState(() {
       if (_index < _questions!.length - 1)
         _index++;
-      else
+      else {
         _index = 0;
+        showDialog(
+            context: context,
+            builder: (ctx) => AlertDialog(
+                  title: Text('Finito'),
+                  content: Text('Hai completato il quiz'),
+                  actions: <Widget>[
+                    FlatButton(
+                      autofocus: true,
+                      child: Text('OK'),
+                      onPressed: () {
+                        doGet();
+                        Navigator.of(ctx).pop(true);
+                      },
+                    )
+                  ],
+                ));
+      }
       // update answers:
       _answers = List.from(_questions![_index].incorrect);
       _answers!.add(_questions![_index].correct);
