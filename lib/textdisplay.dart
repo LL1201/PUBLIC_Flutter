@@ -16,7 +16,7 @@ class TextDisplay extends StatelessWidget {
       margin: EdgeInsets.all(10),
       child: Text(
         htmlParser.DocumentFragment.html(myText).text.toString(),
-        style: TextStyle(fontSize: 28),
+        style: TextStyle(fontSize: 26),
         textAlign: TextAlign.center,
       ),
     );

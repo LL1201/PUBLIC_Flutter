@@ -182,6 +182,7 @@ class _MyHomePageState extends State<MyHomePage> {
         ],
       ),
       body: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
           TextDisplay(
             (_questions != null && _questions![0] != null)
@@ -191,10 +192,15 @@ class _MyHomePageState extends State<MyHomePage> {
           if (_answers != null && _buildAnswerButtons(_answers!) != null)
             ..._buildAnswerButtons(_answers!)
           else
-            const CircularProgressIndicator(), //Text('Load Quiz!'),
-          //Button(selectHandler: next, buttonText: 'next'),
+            const CircularProgressIndicator(),
         ],
       ),
+      floatingActionButton: FloatingActionButton(
+          elevation: 10.0,
+          child: Icon(Icons.refresh),
+          onPressed: () {
+            doGet();
+          }),
     );
   }
 }
