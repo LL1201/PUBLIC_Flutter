@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import './textdisplay.dart';
 import './button.dart';
+import 'results.dart';
 
 void main() => runApp(MyApp());
 
@@ -18,6 +19,9 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Loner Quiz App',
+      routes: {
+        '/resultsScreen': (ctx) => ResultsScreen(),
+      },
       theme: ThemeData(
         primarySwatch: Colors.amber,
         visualDensity: VisualDensity.adaptivePlatformDensity,
@@ -43,6 +47,7 @@ class _MyHomePageState extends State<MyHomePage> {
   List<Question>? _questions = null; // questions data structure
   List<String>? _answers = null; // answers list
   var _index = 0;
+  var _correctAnswers = 0;
 
   // Go to next question:
   void next() {
@@ -63,7 +68,12 @@ class _MyHomePageState extends State<MyHomePage> {
                       child: Text('OK'),
                       onPressed: () {
                         doGet();
-                        Navigator.of(ctx).pop(true);
+                        //Navigator.of(ctx).pop(true);
+                        Navigator.of(context)
+                            .pushNamed('/resultsScreen', arguments: {
+                          'correct': _correctAnswers,
+                          'total': _questions!.length,
+                        });
                       },
                     )
                   ],
@@ -113,7 +123,7 @@ class _MyHomePageState extends State<MyHomePage> {
       var jsondata = json.decode(response.body);
 
       // debug
-      print("Server response: " + response.statusCode.toString());
+      //print("Server response: " + response.statusCode.toString());
     });
   }
 
@@ -124,6 +134,7 @@ class _MyHomePageState extends State<MyHomePage> {
     if (ans == _questions![_index].correct) {
       msg = "Sarà fortuna?";
       correct = true;
+      _correctAnswers++;
     }
 
     showDialog(
@@ -137,7 +148,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   child: Text('OK'),
                   onPressed: () {
                     Navigator.of(ctx).pop(true);
-                    if (correct) next();
+                    next();
                   },
                 )
               ],
