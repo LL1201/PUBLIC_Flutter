@@ -1,18 +1,20 @@
-veicolo = input(
-    'Che tipo di veicolo vuoi imbarcare? (c camion, a autovettura)')
-cilindrata = input('Inserisci la cilindrata espressa in cc')
+while True:
+    nColonne = input('Inserisci il numero di colonne')
+    nRighe = input('Inserisci il numero di righe')
+    if(int(nColonne) > 3 and int(nRighe)):
+        break
 
-if veicolo == 'c':
-    if int(cilindrata) <= 2000:
-        print('Il costo è di € 40')
-    elif int(cilindrata) <= 3000:
-        print('Il costo è di € 50')
-    else:
-        print('Il costo è di € 100')
-elif veicolo == 'a':
-    if int(cilindrata) <= 1000:
-        print('Il costo è di € 20')
-    elif int(cilindrata) <= 2000:
-        print('Il costo è di € 30')
-    else:
-        print('Il costo è di € 40')
+indexR = 0
+indexC = 0
+
+while indexR < int(nRighe):
+    print('\n')
+    while indexC < int(nColonne):
+        if indexR == 0:
+            print('*', end=' ')
+        if indexR == int(nColonne) - 1:
+            print('*', end=' ')
+        if indexC == 0:
+            print('*', end=' ')
+        indexC += 1
+    indexR += 1
