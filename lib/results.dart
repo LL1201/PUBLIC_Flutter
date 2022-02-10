@@ -27,12 +27,14 @@ class ResultsScreen extends StatelessWidget {
           children: [
             Text(
                 'Risposte corrette: $correct\nRisposte errate: $incorrect \nPercentuale di correttezza: $perc%'),
-            FlatButton(
-              autofocus: true,
-              child: Text('Riprova!'),
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                primary: Colors.orange, // Background color
+              ),
               onPressed: () {
-                //Navigator.of(ctx).pop(true);
+                Navigator.pop(context);
               },
+              child: Text('Riprova!'),
             ),
           ],
         ));

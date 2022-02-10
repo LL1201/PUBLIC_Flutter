@@ -68,12 +68,13 @@ class _MyHomePageState extends State<MyHomePage> {
                       child: Text('OK'),
                       onPressed: () {
                         doGet();
-                        //Navigator.of(ctx).pop(true);
+                        Navigator.of(ctx).pop(true);
                         Navigator.of(context)
                             .pushNamed('/resultsScreen', arguments: {
                           'correct': _correctAnswers,
                           'total': _questions!.length,
                         });
+                        //Navigator.of(ctx).pop(true);
                       },
                     )
                   ],
@@ -91,7 +92,7 @@ class _MyHomePageState extends State<MyHomePage> {
     http.get(Uri.parse(baseurl)).then((response) {
       var jsondata = json.decode(response.body);
       var questions = jsondata['results'];
-
+      _correctAnswers = 0;
       // create data structure with questions
       setState(() {
         _questions =
@@ -174,44 +175,46 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.title),
-        actions: <Widget>[
-          FlatButton(
-            textColor: Colors.white,
-            onPressed: () {
-              next();
-            },
-            child: Text(
-              "Next",
-              style: TextStyle(
-                color: Colors.black,
+        appBar: AppBar(
+          title: Text(widget.title),
+          actions: <Widget>[
+            FlatButton(
+              textColor: Colors.white,
+              onPressed: () {
+                next();
+              },
+              child: Text(
+                "Next",
+                style: TextStyle(
+                  color: Colors.black,
+                ),
               ),
+              shape: CircleBorder(side: BorderSide(color: Colors.transparent)),
             ),
-            shape: CircleBorder(side: BorderSide(color: Colors.transparent)),
-          ),
-        ],
-      ),
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          TextDisplay(
-            (_questions != null && _questions![0] != null)
-                ? _questions![_index].question
-                : 'none',
-          ),
-          if (_answers != null && _buildAnswerButtons(_answers!) != null)
-            ..._buildAnswerButtons(_answers!)
-          else
-            const CircularProgressIndicator(),
-        ],
-      ),
-      floatingActionButton: FloatingActionButton(
-          elevation: 10.0,
-          child: Icon(Icons.refresh),
-          onPressed: () {
+          ],
+        ),
+        body: RefreshIndicator(
+          onRefresh: () async {
+            await Future.delayed(Duration(seconds: 2));
             doGet();
-          }),
-    );
+          },
+          child: SingleChildScrollView(
+            physics: AlwaysScrollableScrollPhysics(),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                TextDisplay(
+                  (_questions != null && _questions![0] != null)
+                      ? _questions![_index].question
+                      : 'none',
+                ),
+                if (_answers != null && _buildAnswerButtons(_answers!) != null)
+                  ..._buildAnswerButtons(_answers!)
+                else
+                  const CircularProgressIndicator(),
+              ],
+            ),
+          ),
+        ));
   }
 }
