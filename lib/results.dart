@@ -26,7 +26,10 @@ class ResultsScreen extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(
-                'Risposte corrette: $correct\nRisposte errate: $incorrect \nPercentuale di correttezza: $perc%'),
+              'Risposte corrette: $correct\nRisposte errate: $incorrect \nPercentuale di correttezza: $perc%',
+              style: TextStyle(fontSize: 20),
+              textAlign: TextAlign.center,
+            ),
             ElevatedButton(
               style: ElevatedButton.styleFrom(
                 primary: Colors.orange, // Background color

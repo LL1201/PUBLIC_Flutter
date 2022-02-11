@@ -58,6 +58,7 @@ class _MyHomePageState extends State<MyHomePage> {
       else {
         _index = 0;
         showDialog(
+            barrierDismissible: false,
             context: context,
             builder: (ctx) => AlertDialog(
                   title: Text('Finito'),
@@ -74,6 +75,7 @@ class _MyHomePageState extends State<MyHomePage> {
                           'correct': _correctAnswers,
                           'total': _questions!.length,
                         });
+
                         //Navigator.of(ctx).pop(true);
                       },
                     )
@@ -93,6 +95,7 @@ class _MyHomePageState extends State<MyHomePage> {
       var jsondata = json.decode(response.body);
       var questions = jsondata['results'];
       _correctAnswers = 0;
+      _index = 0;
       // create data structure with questions
       setState(() {
         _questions =
@@ -102,11 +105,6 @@ class _MyHomePageState extends State<MyHomePage> {
         _answers!.add(_questions![_index].correct);
         _answers!.shuffle();
       });
-
-      // debug
-      /*print("First question: " + questions[0]['question']);
-      print("First question: " + questions[0]['correct_answer']);
-      print("category: " + questions[0]['category']);*/
     });
   }
 
@@ -122,9 +120,6 @@ class _MyHomePageState extends State<MyHomePage> {
             }))
         .then((response) {
       var jsondata = json.decode(response.body);
-
-      // debug
-      //print("Server response: " + response.statusCode.toString());
     });
   }
 
@@ -133,7 +128,7 @@ class _MyHomePageState extends State<MyHomePage> {
     bool correct = false;
     String msg = "HAI SBAGLIATO!!!!!!!!! ";
     if (ans == _questions![_index].correct) {
-      msg = "Sarà fortuna?";
+      msg = "Risposta corretta! Sarà fortuna?";
       correct = true;
       _correctAnswers++;
     }
@@ -212,6 +207,19 @@ class _MyHomePageState extends State<MyHomePage> {
                   ..._buildAnswerButtons(_answers!)
                 else
                   const CircularProgressIndicator(),
+                Text(
+                  'Domanda: ' +
+                      (_index + 1).toString() +
+                      '/' +
+                      _questions!.length.toString(),
+                  style: TextStyle(fontSize: 20),
+                  textAlign: TextAlign.center,
+                ),
+                Align(
+                  alignment: Alignment.bottomCenter,
+                  child: Text(
+                      "Per aggiornare il quiz ed iniziare dall'inizio fai swipe down!"),
+                ),
               ],
             ),
           ),
