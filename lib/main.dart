@@ -4,11 +4,11 @@
   https://docs.flutter.dev/cookbook/navigation/navigate-with-arguments
  */
 
+import 'package:flutter/foundation.dart';
+import 'package:textfield/todoDescription.dart';
+
 import 'secondscreen.dart';
 import 'package:flutter/material.dart';
-
-import './textdisplay.dart';
-import './button.dart';
 import 'model/todo.dart';
 
 void main() => runApp(MyApp());
@@ -19,15 +19,16 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Luke Flutter Demo',
+      title: 'Loner todo app',
       theme: ThemeData(
         primarySwatch: Colors.red,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: MyHomePage(title: 'Luke App'),
+      home: MyHomePage(title: 'Loner todo app'),
       // Define here the routes for the other app screens:
       routes: {
         '/secondscreen': (ctx) => SecondScreen(),
+        '/todoDescription': (ctx) => TodoDescription(),
       },
     );
   }
@@ -44,44 +45,35 @@ class MyHomePage extends StatefulWidget {
 
   @override
   _MyHomePageState createState() => _MyHomePageState();
-
-  /*
-  @override
-  State<StatefulWidget> createState() {
-    // TODO: implement createState
-    return _MyHomePageState(); 
-  } */
 }
 
 class _MyHomePageState extends State<MyHomePage> {
   var _index = 0;
 
-  var _displayMessages = [
-    'Hello World',
-    'Ciao Mondo',
-    'Hallo Welt',
-    'Bonjour le Monde',
-    'Hola Mundo',
-    'Saluton mondo',
-  ];
-
   // Lista elementi
-  final todos = List.generate(
-    20,
-    (i) => Todo(
-      'Todo $i',
-      'A description of what needs to be done for Todo $i',
-    ),
-  );
+  final List<Todo> todos = [];
 
-  void _changeMessage() {
+  void viewSecondScreen(BuildContext context) async {
+    // Navigator.push returns a Future that completes after calling
+    // Navigator.pop on the Selection Screen.
+    final Todo newTodo = await Navigator.push(
+      context,
+      // Create the SelectionScreen in the next step.
+      MaterialPageRoute(builder: (context) => const SecondScreen()),
+    );
     setState(() {
-      if (_index >= _displayMessages.length - 1)
-        _index = 0;
-      else
-        _index += 1;
+      todos.add(newTodo);
+      final snackBar = SnackBar(
+        content: Text(newTodo.title.toString() + ' aggiunto!'),
+        /*action: SnackBarAction(
+            label: 'Undo',
+            onPressed: () {
+              todos.remove(todos.last);
+            },
+          )*/
+      );
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
     });
-    print(_index);
   }
 
   @override
@@ -96,7 +88,7 @@ class _MyHomePageState extends State<MyHomePage> {
           return ListTile(
             title: Text(todos[index].title),
             onTap: () {
-              Navigator.of(context).pushNamed('/secondscreen', arguments: {
+              Navigator.of(context).pushNamed('/todoDescription', arguments: {
                 'todo': todos[index],
               });
             },
@@ -113,7 +105,7 @@ class _MyHomePageState extends State<MyHomePage> {
             child: FloatingActionButton(
               heroTag: 'next',
               onPressed: () {
-                Navigator.of(context).pushNamed('/secondscreen');
+                viewSecondScreen(context);
               },
               child: Icon(
                 Icons.add,
