@@ -21,19 +21,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Luke Flutter Demo',
       theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // Try running your application with "flutter run". You'll see the
-        // application has a blue toolbar. Then, without quitting the app, try
-        // changing the primarySwatch below to Colors.green and then invoke
-        // "hot reload" (press "r" in the console where you ran "flutter run",
-        // or simply save your changes to "hot reload" in a Flutter IDE).
-        // Notice that the counter didn't reset back to zero; the application
-        // is not restarted.
-        primarySwatch: Colors.brown,
-        // This makes the visual density adapt to the platform that you run
-        // the app on. For desktop platforms, the controls will be smaller and
-        // closer together (more dense) than on mobile platforms.
+        primarySwatch: Colors.red,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
       home: MyHomePage(title: 'Luke App'),
@@ -107,9 +95,6 @@ class _MyHomePageState extends State<MyHomePage> {
         itemBuilder: (context, index) {
           return ListTile(
             title: Text(todos[index].title),
-            // When a user taps the ListTile, navigate to the DetailScreen.
-            // Notice that you're not only creating a DetailScreen, you're
-            // also passing the current todo through to it.
             onTap: () {
               Navigator.of(context).pushNamed('/secondscreen', arguments: {
                 'todo': todos[index],
@@ -117,6 +102,26 @@ class _MyHomePageState extends State<MyHomePage> {
             },
           );
         },
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+      floatingActionButton: Stack(
+        fit: StackFit.expand,
+        children: [
+          Positioned(
+            bottom: 20,
+            right: 30,
+            child: FloatingActionButton(
+              heroTag: 'next',
+              onPressed: () {
+                Navigator.of(context).pushNamed('/secondscreen');
+              },
+              child: Icon(
+                Icons.add,
+                size: 32,
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }
