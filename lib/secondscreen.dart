@@ -35,7 +35,7 @@ class SecondScreen extends StatelessWidget {
           controller: titleController, // TextEditingController
           decoration: const InputDecoration(
             border: UnderlineInputBorder(),
-            labelText: 'Inserisci un titolo per il todo :',
+            labelText: 'Inserisci un titolo per il todo:',
           ),
         ),
         TextFormField(
