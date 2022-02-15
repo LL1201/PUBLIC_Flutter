@@ -1,220 +1,115 @@
-// This app gets data from Firebase RealTime database through http requests
-// https://pub.dev/packages/http
-
-import 'dart:convert';
-
-import 'Question.dart';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
-import './textdisplay.dart';
-import './button.dart';
-import 'results.dart';
 
-void main() => runApp(MyApp());
+void main() {
+  runApp(const MyApp());
+}
 
 class MyApp extends StatelessWidget {
-  // This widget is the root of your application.
+  const MyApp({Key? key}) : super(key: key);
 
+  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Loner Quiz App',
-      routes: {
-        '/resultsScreen': (ctx) => ResultsScreen(),
-      },
+      title: 'Flutter Demo',
       theme: ThemeData(
-        primarySwatch: Colors.amber,
-        visualDensity: VisualDensity.adaptivePlatformDensity,
+        // This is the theme of your application.
+        //
+        // Try running your application with "flutter run". You'll see the
+        // application has a blue toolbar. Then, without quitting the app, try
+        // changing the primarySwatch below to Colors.green and then invoke
+        // "hot reload" (press "r" in the console where you ran "flutter run",
+        // or simply save your changes to "hot reload" in a Flutter IDE).
+        // Notice that the counter didn't reset back to zero; the application
+        // is not restarted.
+        primarySwatch: Colors.blue,
       ),
-      home: MyHomePage(title: 'Loner Quiz'),
+      home: const MyHomePage(title: 'Flutter Demo Home Page'),
     );
   }
 }
 
 class MyHomePage extends StatefulWidget {
-  MyHomePage({Key? key, required this.title}) : super(key: key);
+  const MyHomePage({Key? key, required this.title}) : super(key: key);
+
+  // This widget is the home page of your application. It is stateful, meaning
+  // that it has a State object (defined below) that contains fields that affect
+  // how it looks.
+
+  // This class is the configuration for the state. It holds the values (in this
+  // case the title) provided by the parent (in this case the App widget) and
+  // used by the build method of the State. Fields in a Widget subclass are
+  // always marked "final".
 
   final String title;
 
   @override
-  _MyHomePageState createState() => _MyHomePageState();
+  State<MyHomePage> createState() => _MyHomePageState();
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  // Sample url:
-  final baseurl = "https://opentdb.com/api.php?amount=10&category=18";
+  int _counter = 0;
 
-  List<Question>? _questions = null; // questions data structure
-  List<String>? _answers = null; // answers list
-  var _index = 0;
-  var _correctAnswers = 0;
-
-  // Go to next question:
-  void next() {
-    if (_questions == null || _questions!.length == 0) return;
+  void _incrementCounter() {
     setState(() {
-      if (_index < _questions!.length - 1)
-        _index++;
-      else {
-        _index = 0;
-        showDialog(
-            context: context,
-            builder: (ctx) => AlertDialog(
-                  title: Text('Finito'),
-                  content: Text('Hai completato il quiz'),
-                  actions: <Widget>[
-                    FlatButton(
-                      autofocus: true,
-                      child: Text('OK'),
-                      onPressed: () {
-                        doGet();
-                        Navigator.of(ctx).pop(true);
-                        Navigator.of(context)
-                            .pushNamed('/resultsScreen', arguments: {
-                          'correct': _correctAnswers,
-                          'total': _questions!.length,
-                        });
-                        //Navigator.of(ctx).pop(true);
-                      },
-                    )
-                  ],
-                ));
-      }
-      // update answers:
-      _answers = List.from(_questions![_index].incorrect);
-      _answers!.add(_questions![_index].correct);
-      _answers!.shuffle();
+      // This call to setState tells the Flutter framework that something has
+      // changed in this State, which causes it to rerun the build method below
+      // so that the display can reflect the updated values. If we changed
+      // _counter without calling setState(), then the build method would not be
+      // called again, and so nothing would appear to happen.
+      _counter++;
     });
-  }
-
-  // Get data
-  void doGet() {
-    http.get(Uri.parse(baseurl)).then((response) {
-      var jsondata = json.decode(response.body);
-      var questions = jsondata['results'];
-      _correctAnswers = 0;
-      // create data structure with questions
-      setState(() {
-        _questions =
-            questions.map<Question>((val) => Question.fromJson(val)).toList();
-        // initialize answer list:
-        _answers = List.from(_questions![_index].incorrect);
-        _answers!.add(_questions![_index].correct);
-        _answers!.shuffle();
-      });
-
-      // debug
-      /*print("First question: " + questions[0]['question']);
-      print("First question: " + questions[0]['correct_answer']);
-      print("category: " + questions[0]['category']);*/
-    });
-  }
-
-  // Post data to Firebase
-  void doPost(String postUrl) {
-    http
-        .post(Uri.parse(postUrl),
-            body: json.encode({
-              'name': "Pluto",
-              'email': "pluto@whitehouse.gov",
-              'zipcode': 12364,
-              'id': 0
-            }))
-        .then((response) {
-      var jsondata = json.decode(response.body);
-
-      // debug
-      //print("Server response: " + response.statusCode.toString());
-    });
-  }
-
-  // Check if the answer is correct and display an AlertDialog:
-  void _checkAnswer(String ans) {
-    bool correct = false;
-    String msg = "HAI SBAGLIATO!!!!!!!!! ";
-    if (ans == _questions![_index].correct) {
-      msg = "Sarà fortuna?";
-      correct = true;
-      _correctAnswers++;
-    }
-
-    showDialog(
-        context: context,
-        builder: (ctx) => AlertDialog(
-              title: Text('Result'),
-              content: Text(msg),
-              actions: <Widget>[
-                FlatButton(
-                  autofocus: true,
-                  child: Text('OK'),
-                  onPressed: () {
-                    Navigator.of(ctx).pop(true);
-                    next();
-                  },
-                )
-              ],
-            ));
-  }
-
-  // Return a list of buttons with the answers to put in the screen:
-  List<Widget> _buildAnswerButtons(List<String> ans) {
-    return ans
-        .map<Button>((e) => Button(
-            selectHandler: () => _checkAnswer(e),
-            buttonText: e,
-            color: Colors.orange))
-        .toList();
-  }
-
-  // Load data from Open Trivia DB at the beginning:
-  void initState() {
-    doGet();
-    //assert(_debugLifecycleState == _StateLifecycle.created);
   }
 
   @override
   Widget build(BuildContext context) {
+    // This method is rerun every time setState is called, for instance as done
+    // by the _incrementCounter method above.
+    //
+    // The Flutter framework has been optimized to make rerunning build methods
+    // fast, so that you can just rebuild anything that needs updating rather
+    // than having to individually change instances of widgets.
     return Scaffold(
-        appBar: AppBar(
-          title: Text(widget.title),
-          actions: <Widget>[
-            FlatButton(
-              textColor: Colors.white,
-              onPressed: () {
-                next();
-              },
-              child: Text(
-                "Next",
-                style: TextStyle(
-                  color: Colors.black,
-                ),
-              ),
-              shape: CircleBorder(side: BorderSide(color: Colors.transparent)),
+      appBar: AppBar(
+        // Here we take the value from the MyHomePage object that was created by
+        // the App.build method, and use it to set our appbar title.
+        title: Text(widget.title),
+      ),
+      body: Center(
+        // Center is a layout widget. It takes a single child and positions it
+        // in the middle of the parent.
+        child: Column(
+          // Column is also a layout widget. It takes a list of children and
+          // arranges them vertically. By default, it sizes itself to fit its
+          // children horizontally, and tries to be as tall as its parent.
+          //
+          // Invoke "debug painting" (press "p" in the console, choose the
+          // "Toggle Debug Paint" action from the Flutter Inspector in Android
+          // Studio, or the "Toggle Debug Paint" command in Visual Studio Code)
+          // to see the wireframe for each widget.
+          //
+          // Column has various properties to control how it sizes itself and
+          // how it positions its children. Here we use mainAxisAlignment to
+          // center the children vertically; the main axis here is the vertical
+          // axis because Columns are vertical (the cross axis would be
+          // horizontal).
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            const Text(
+              'You have pushed the button this many times:',
+            ),
+            Text(
+              '$_counter',
+              style: Theme.of(context).textTheme.headline4,
             ),
           ],
         ),
-        body: RefreshIndicator(
-          onRefresh: () async {
-            await Future.delayed(Duration(seconds: 2));
-            doGet();
-          },
-          child: SingleChildScrollView(
-            physics: AlwaysScrollableScrollPhysics(),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                TextDisplay(
-                  (_questions != null && _questions![0] != null)
-                      ? _questions![_index].question
-                      : 'none',
-                ),
-                if (_answers != null && _buildAnswerButtons(_answers!) != null)
-                  ..._buildAnswerButtons(_answers!)
-                else
-                  const CircularProgressIndicator(),
-              ],
-            ),
-          ),
-        ));
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: _incrementCounter,
+        tooltip: 'Increment',
+        child: const Icon(Icons.add),
+      ), // This trailing comma makes auto-formatting nicer for build methods.
+    );
   }
 }

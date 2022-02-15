@@ -1,8 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.quiz">
-   <uses-permission android:name="android.permission.INTERNET" />
+    package="com.example.textfield">
    <application
-        android:label="quiz"
+        android:label="textfield"
         android:icon="@mipmap/ic_launcher">
         <activity
             android:name=".MainActivity"
