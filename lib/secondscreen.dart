@@ -2,7 +2,7 @@
 
 import 'package:flutter/material.dart';
 
-import 'model/todo.dart';
+import 'todo.dart';
 
 //import './textdisplay.dart';
 //import './button.dart';

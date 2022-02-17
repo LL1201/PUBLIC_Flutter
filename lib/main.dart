@@ -9,7 +9,7 @@ import 'package:textfield/todoDescription.dart';
 
 import 'secondscreen.dart';
 import 'package:flutter/material.dart';
-import 'model/todo.dart';
+import 'todo.dart';
 
 void main() => runApp(MyApp());
 
