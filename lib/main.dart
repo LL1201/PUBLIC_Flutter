@@ -56,23 +56,30 @@ class _MyHomePageState extends State<MyHomePage> {
   void viewSecondScreen(BuildContext context) async {
     // Navigator.push returns a Future that completes after calling
     // Navigator.pop on the Selection Screen.
+
     final Todo newTodo = await Navigator.push(
       context,
       // Create the SelectionScreen in the next step.
       MaterialPageRoute(builder: (context) => const SecondScreen()),
     );
+
     setState(() {
       todos.add(newTodo);
       final snackBar = SnackBar(
-        content: Text(newTodo.title.toString() + ' aggiunto!'),
-        /*action: SnackBarAction(
+          content: Text(newTodo.title.toString() + ' aggiunto!'),
+          action: SnackBarAction(
             label: 'Undo',
             onPressed: () {
-              todos.remove(todos.last);
+              undoAction(context);
             },
-          )*/
-      );
+          ));
       ScaffoldMessenger.of(context).showSnackBar(snackBar);
+    });
+  }
+
+  void undoAction(BuildContext context) async {
+    setState(() {
+      todos.remove(todos.last);
     });
   }
 
