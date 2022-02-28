@@ -2,7 +2,8 @@
 
 import 'package:flutter/material.dart';
 
-import 'model/todo.dart';
+import 'todo.dart';
+import './textdisplay.dart';
 
 //import './textdisplay.dart';
 //import './button.dart';
@@ -24,7 +25,7 @@ class TodoDescription extends StatelessWidget {
         title: Text(todo.title),
       ),
       body: Column(children: [
-        Text(todo.description),
+        TextDisplay(todo.description),
       ]),
     );
   }

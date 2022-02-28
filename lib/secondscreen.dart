@@ -1,6 +1,8 @@
+// ignore_for_file: curly_braces_in_flow_control_structures
+
 import 'package:flutter/material.dart';
 
-import 'model/todo.dart';
+import 'todo.dart';
 
 //import './textdisplay.dart';
 //import './button.dart';
