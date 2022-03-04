@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Registrati</title>
+    <title>Profilo</title>
     <link href="style.css" rel="stylesheet" type="text/css">
 </head>
 <div class="titolo">
@@ -25,7 +25,8 @@ session_start();
             echo '<li></li><a href="index.php" title="Homepage">Homepage</a></li>
                 <li><a href="queryPage.php" title="Login">Pagina delle query</a></li>                
                 <li class="paginascelta"><a href="profilo.php" title="Il mio profilo">Il mio profilo</a></li>
-                <li><a href="logout.php" title="Esci">Esci</a></li>';
+                <li><a href="logout.php" title="Esci">Esci</a></li>
+                <li><a href="management.php" title="Management">Management</a></li>';
         }
         ?>
     </ul>
@@ -38,28 +39,30 @@ session_start();
     $data = $conn->query("SELECT * FROM soci");
     while ($row = $data->fetch_assoc()) {
         if ($row['mail'] == $_SESSION['utente']) {
+            $cognome = $row['cognome'];
             $nome = $row['nome'];
-            $cognome = $row['nome'];
-            $telefono = $row['nome'];
-            $mail = $row['nome'];
+            $telefono = $row['nTelefono'];
+            $mail = $row['mail'];
         }
     }
     echo '<div class="form-center">
-        <form action="registraQuery.php" method="post">
+        <form action="cambiaDati.php" method="post">
             <fieldset>
                 Cognome:
                 <input type="text" name="txtCognome" value="' . $cognome . '">
                 <br>
                 Nome:
-                <input type="text" name="txtNome value="' . $nome . '">
+                <input type="text" name="txtNome" value="' . $nome . '">
                 <br>
                 Numero telefono:
                 <input type="text" name="txtNumero" maxlength="10" value="' . $telefono . '">
                 <br>
                 Mail:
                 <input type="text" name="txtMail" value="' . $mail . '" readonly>   
-                <br>                
-                <input type="submit" name="btnModifica" value="Aggiorna i dati!">
+                <br>                              
+                <input type="submit" name="btnModifica" value="Aggiorna i dati!">  
+                <br>
+                Per poter modificare gli altri dati (compresa la mail) è necessario contattare un segretario!                
             </fieldset>
         </form>
     </div>';

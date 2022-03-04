@@ -27,7 +27,8 @@ session_start();
             echo '<li></li><a href="index.php" title="Homepage">Homepage</a></li>
                 <li class="paginascelta"><a href="queryPage.php" title="Login">Pagina delle query</a></li>                
                 <li><a href="profilo.php" title="Il mio profilo">Il mio profilo</a></li>
-                <li><a href="logout.php" title="Esci">Esci</a></li>';
+                <li><a href="logout.php" title="Esci">Esci</a></li>
+                <li><a href="management.php" title="Management">Management</a></li>';
         }
         ?>
     </ul>
