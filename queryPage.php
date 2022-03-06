@@ -58,11 +58,11 @@ session_start();
         <form action="queryA.php" method="post">
             <fieldset>
                 <h3>Visualizza le prestazioni relative ad un servizio:</h3>
-                <select name="cmbServizioPrestazione">
-                    <?php
-                    include("cmbServizio.php");
-                    ?>
-                </select>
+                <select name="cmbServizioPrestazione">';
+
+        include("cmbServizio.php");
+
+        echo '</select>
                 <input type="submit" name="btnVisualizzaPrestazioni" value="Visualizza">
             </fieldset>
         </form>
@@ -72,11 +72,11 @@ session_start();
         <form action="queryB.php" method="post">
             <fieldset>
                 <h3>Visualizza tutti i servizi di una zona:</h3>
-                <select name="cmbZonaB">
-                    <?php
-                    include("cmbZona.php");
-                    ?>
-                </select>
+                <select name="cmbZonaB">';
+
+        include("cmbZona.php");
+
+        echo '</select>
                 <input type="submit" name="btnVisualizzaServizi" value="Visualizza">
             </fieldset>
         </form>
@@ -86,16 +86,16 @@ session_start();
         <form action="queryC.php" method="post">
             <fieldset>
                 <h3>Visualizza tutti gli offerenti di una prestazione:</h3>
-                <select name="cmbZonaC">
-                    <?php
-                    include("cmbZona.php");
-                    ?>
-                </select>
-                <select name="cmbServizio">
-                    <?php
-                    include("cmbServizio.php");
-                    ?>
-                </select>
+                <select name="cmbZonaC">';
+
+        include("cmbZona.php");
+
+        echo '</select>
+                <select name="cmbServizio">';
+
+        include("cmbServizio.php");
+
+        echo '</select>
                 <input type="submit" name="btnVisualizzaPrestazione" value="Visualizza">
             </fieldset>
         </form>
