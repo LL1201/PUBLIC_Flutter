@@ -1,9 +1,8 @@
 <?php
-include_once "connessione.php";
+include_once "connLimiti.php";
 session_start();
 
-$telefono = $_POST['txtNumero'];
-$mail = $_POST['txtMail'];
+$telefono = $_POST['cmbServizio'];
 
 $stmt = $conn->prepare("UPDATE soci SET nTelefono=? WHERE mail = ?");
 $stmt->bind_param("ss", $telefono, $mail);

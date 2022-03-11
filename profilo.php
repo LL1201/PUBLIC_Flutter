@@ -34,7 +34,7 @@ session_start();
 
 <body>
     <?php
-    include_once "connessione.php";
+    include_once "connLimiti.php";
 
     $data = $conn->query("SELECT * FROM soci");
     while ($row = $data->fetch_assoc()) {
@@ -45,14 +45,25 @@ session_start();
             $mail = $row['mail'];
         }
     }
+
+    $query = $conn->prepare("SELECT servizi.descrizione AS servDesc FROM servizi
+    JOIN capace ON servizi.idServizio=capace.FK_idServizio
+    JOIN soci ON capace.FK_idSocio=soci.idSocio
+    WHERE mail=?");
+    $query->bind_param("s", $mail);
+    $query->execute();
+
+    $risultato = $query->get_result();
+
     echo '<div class="form-center">
         <form action="cambiaDati.php" method="post">
             <fieldset>
+                <h3>I tuoi dati</h3>
                 Cognome:
-                <input type="text" name="txtCognome" value="' . $cognome . '">
+                <input type="text" name="txtCognome" value="' . $cognome . '" readonly>
                 <br>
                 Nome:
-                <input type="text" name="txtNome" value="' . $nome . '">
+                <input type="text" name="txtNome" value="' . $nome . '" readonly>
                 <br>
                 Numero telefono:
                 <input type="text" name="txtNumero" maxlength="10" value="' . $telefono . '">
@@ -64,6 +75,30 @@ session_start();
                 <br>
                 Per poter modificare gli altri dati (compresa la mail) è necessario contattare un segretario!                
             </fieldset>
+        </form>
+    </div>';
+    echo '<div class="form-center">
+        <form action="cambiaDati.php" method="post">
+            <fieldset>
+                <h3>Aggiungi dei servizi che puoi offrire!</h3>';
+    echo "<table>";
+    echo "<tr>";
+    echo "<th>Servizi attualmente offerti</th>";
+    echo "</tr>";
+
+    while ($array = mysqli_fetch_array($risultato, MYSQLI_ASSOC)) {
+        echo "<tr>";
+        echo "<td>" . $array['servDesc'] . "</td>";
+        echo "</tr>";
+    }
+    echo "</table><br/><br/>";
+    echo '<select name="cmbServizio">';
+
+    include("cmbServizio.php");
+
+    echo '</select>';
+    echo '<input type="submit" name="btnAggiungi" value="Aggiungi">';
+    echo '</fieldset>
         </form>
     </div>';
     ?>

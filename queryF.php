@@ -20,7 +20,7 @@
         header('Location:login.php');
         exit;
     }
-    include_once "connessione.php";
+    include_once "connApprovato.php";
 
     $stmt = $conn->prepare("SELECT s.*, SUM(oreP) AS oreRicevute FROM soci s, prestazioni p
     WHERE s.idSocio=p.FK_idSocioRiceve GROUP BY s.idSocio HAVING oreRicevute > (SELECT SUM(oreP) FROM prestazioni p WHERE s.idSocio=p.FK_idSocioOffre)");

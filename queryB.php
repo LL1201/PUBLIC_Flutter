@@ -20,7 +20,7 @@
         header('Location:login.php');
         exit;
     }
-    include_once "connessione.php";
+    include_once "connApprovato.php";
 
     $zona = $_POST['cmbZonaB'];
 

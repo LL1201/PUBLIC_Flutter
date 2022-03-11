@@ -20,7 +20,7 @@
         header('Location:login.php');
         exit;
     }
-    include_once "connessione.php";
+    include_once "connApprovato.php";
 
     $stmt = $conn->prepare("SELECT t.cognome AS cognome, t.nome AS nome FROM (SELECT soci.cognome, soci.nome, COUNT(soci.idSocio) FROM soci
 	JOIN capace ON capace.FK_idSocio=soci.idSocio

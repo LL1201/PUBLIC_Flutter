@@ -26,7 +26,8 @@
                 <li><a href="registrazione.php" title="Registrati">Registrati</a></li>';
             } else {
                 echo '<li class="paginascelta"><a href="index.php">Homepage</a></li>
-                <li><a href="queryPage.php" title="Login">Pagina delle query</a></li>
+                <li><a href="queryPage.php" title="Login">Pagina delle query</a></li>                
+                <li><a href="profilo.php" title="Il mio profilo">Il mio profilo</a></li>
                 <li><a href="logout.php" title="Esci">Esci</a></li>
                 <li><a href="management.php" title="Management">Management</a></li>';
             }

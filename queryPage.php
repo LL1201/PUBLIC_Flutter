@@ -37,7 +37,6 @@ session_start();
 <body>
 
     <?php
-    include_once "connessione.php";
     if (!isset($_SESSION['utente'])) //se la sessione non è
     {
         header('Location:login.php');
@@ -46,14 +45,10 @@ session_start();
         echo "Benvenuto utente " . $_SESSION['utente'];
     }
 
-    $flag = false;
-    $approvedUser = $conn->query("SELECT mail, checked FROM soci");
-    while ($row = $approvedUser->fetch_assoc()) {
-        if ($row['mail'] == $_SESSION['utente'] && $row['checked'] == '1')
-            $flag = true;
-    }
-    if ($flag) {
-
+    if (!isset($_SESSION['ruolo'])) {
+        echo "<br>Il tuo account non è ancora stato approvato da un segretario! Non puoi visualizzare la pagina delle query";
+    } else {
+        include_once "connApprovato.php";
         echo '<div class="form-center">
         <form action="queryA.php" method="post">
             <fieldset>
@@ -127,8 +122,7 @@ session_start();
             </fieldset>
         </form>
     </div>';
-    } else
-        echo "<br>Il tuo account non è ancora stato approvato da un segretario! Non puoi visualizzare la pagina delle query";
+    }
     ?>
 </body>
 
