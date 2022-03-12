@@ -1,9 +1,29 @@
 <?php
-include_once "connessione.php";
+
 session_start();
+if (!isset($_SESSION['utente'])) //se la sessione non è
+{
+    header('Location:login.php');
+    exit;
+}
+
+if (!isset($_SESSION['ruolo']))
+    include_once "connLimiti.php";
+else
+    switch ($_SESSION['ruolo']) {
+        case 'Approvato':
+            include_once "connApprovato.php";
+            break;
+        case 'Segretario':
+            include_once "connSegretario.php";
+            break;
+        default:
+            include_once "connLimiti.php";
+            break;
+    }
 
 $telefono = $_POST['txtNumero'];
-$mail = $_POST['txtMail'];
+$mail = $_SESSION['utente'];
 
 $stmt = $conn->prepare("UPDATE soci SET nTelefono=? WHERE mail = ?");
 $stmt->bind_param("ss", $telefono, $mail);

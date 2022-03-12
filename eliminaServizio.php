@@ -22,13 +22,10 @@ else
             break;
     }
 
-$query = "SELECT idSocio FROM soci WHERE mail='" . $_SESSION['utente'] . "'";
-$id = $conn->query($query);
+$id = $_POST['btnElimina'];
 
-$servizio = $_POST['cmbServizio'];
-
-$stmt = $conn->prepare("INSERT INTO capace(FK_idSocio, FK_idServizio) VALUES(?,?)");
-$stmt->bind_param("is", $id, $servizio);
+$stmt = $conn->prepare("DELETE FROM capace WHERE idCapace=?");
+$stmt->bind_param("i", $id);
 $stmt->execute();
 
 $risultato = $stmt->get_result();

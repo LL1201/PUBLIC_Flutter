@@ -68,7 +68,7 @@ session_start();
 
         while ($array = mysqli_fetch_array($risultato, MYSQLI_ASSOC)) {
             echo "<tr>";
-            echo "<td>" . $array['nome'] . "</td><td>" . $array['cognome'] . "</td>" . "</td><td>" . $array['tel'] . "</td><td>" . $array['via'] . "</td><td>" . $array['descZona'] . "</td><td>" . $array['email'] . '</td><td><form action="approva.php" method="post" id="form1"><button type="submit" name="btnApprova" form="form1" value="' . $array['email'] . '">Approva</button></form>';
+            echo "<td>" . $array['nome'] . "</td><td>" . $array['cognome'] . "</td>" . "</td><td>" . $array['tel'] . "</td><td>" . $array['via'] . "</td><td>" . $array['descZona'] . "</td><td>" . $array['email'] . '</td><td><form action="approva.php" method="post" id="form1"><button type="submit" name="btnApprova" form="form1" value="' . $array['email'] . '">Approva</button></form></td>';
             echo "</tr>";
         }
         echo "</table><br/><br/>";

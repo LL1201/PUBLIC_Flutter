@@ -8,6 +8,17 @@
     <title>Profilo</title>
     <link href="style.css" rel="stylesheet" type="text/css">
 </head>
+<style>
+    table tbody tr td form button {
+        background-color: rgb(175, 255, 255);
+        color: black;
+        border-color: black;
+    }
+
+    table tbody tr td form button:hover {
+        background-color: rgb(40, 255, 255);
+    }
+</style>
 <div class="titolo">
     Il mio profilo
 </div>
@@ -34,7 +45,20 @@ session_start();
 
 <body>
     <?php
-    include_once "connLimiti.php";
+    if (!isset($_SESSION['ruolo']))
+        include_once "connLimiti.php";
+    else
+        switch ($_SESSION['ruolo']) {
+            case 'Approvato':
+                include_once "connApprovato.php";
+                break;
+            case 'Segretario':
+                include_once "connSegretario.php";
+                break;
+            default:
+                include_once "connLimiti.php";
+                break;
+        }
 
     $data = $conn->query("SELECT * FROM soci");
     while ($row = $data->fetch_assoc()) {
@@ -46,7 +70,7 @@ session_start();
         }
     }
 
-    $query = $conn->prepare("SELECT servizi.descrizione AS servDesc FROM servizi
+    $query = $conn->prepare("SELECT capace.idCapace AS idC, servizi.descrizione AS servDesc FROM servizi
     JOIN capace ON servizi.idServizio=capace.FK_idServizio
     JOIN soci ON capace.FK_idSocio=soci.idSocio
     WHERE mail=?");
@@ -60,16 +84,16 @@ session_start();
             <fieldset>
                 <h3>I tuoi dati</h3>
                 Cognome:
-                <input type="text" name="txtCognome" value="' . $cognome . '" readonly>
+                <b>' . $cognome . '</b>
                 <br>
                 Nome:
-                <input type="text" name="txtNome" value="' . $nome . '" readonly>
+                 <b>' . $nome . '</b>
                 <br>
                 Numero telefono:
                 <input type="text" name="txtNumero" maxlength="10" value="' . $telefono . '">
                 <br>
                 Mail:
-                <input type="text" name="txtMail" value="' . $mail . '" readonly>   
+                 <b>' . $mail . '</b> 
                 <br>                              
                 <input type="submit" name="btnModifica" value="Aggiorna i dati!">  
                 <br>
@@ -78,17 +102,17 @@ session_start();
         </form>
     </div>';
     echo '<div class="form-center">
-        <form action="cambiaDati.php" method="post">
+        <form action="aggiungiServizio.php" method="post">
             <fieldset>
                 <h3>Aggiungi dei servizi che puoi offrire!</h3>';
     echo "<table>";
     echo "<tr>";
-    echo "<th>Servizi attualmente offerti</th>";
+    echo "<th>Servizi attualmente offerti</th><th>Azione</th>";
     echo "</tr>";
 
     while ($array = mysqli_fetch_array($risultato, MYSQLI_ASSOC)) {
         echo "<tr>";
-        echo "<td>" . $array['servDesc'] . "</td>";
+        echo "<td>" . $array['servDesc'] . '</td><td><form action="eliminaServizio.php" method="post" id="form1"><button type="submit" name="btnElimina" form="form1" value="' . $array['idC'] . '">Elimina</button></form></td>';
         echo "</tr>";
     }
     echo "</table><br/><br/>";

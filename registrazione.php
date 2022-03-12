@@ -48,13 +48,6 @@
                     ?>
                 </select>
                 <br>
-                Cosa sei capace di fare?:
-                <select name="cmbServizioReg">
-                    <?php
-                    include("cmbServizio.php");
-                    ?>
-                </select>
-                <br>
                 <input type="submit" name="btnRegistrati" value="Registrati">
             </fieldset>
         </form>
