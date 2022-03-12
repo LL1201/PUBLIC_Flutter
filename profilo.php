@@ -60,13 +60,14 @@ session_start();
                 break;
         }
 
-    $data = $conn->query("SELECT * FROM soci");
+    $data = $conn->query("SELECT *  FROM soci");
     while ($row = $data->fetch_assoc()) {
         if ($row['mail'] == $_SESSION['utente']) {
             $cognome = $row['cognome'];
             $nome = $row['nome'];
             $telefono = $row['nTelefono'];
             $mail = $row['mail'];
+            $via = $row['via'];
         }
     }
 
@@ -93,8 +94,11 @@ session_start();
                 <input type="text" name="txtNumero" maxlength="10" value="' . $telefono . '">
                 <br>
                 Mail:
-                 <b>' . $mail . '</b> 
-                <br>                              
+                <b>' . $mail . '</b> 
+                <br>
+                Via:
+                <input type="text" name="txtVia" value="' . $via . '">
+                <br>                           
                 <input type="submit" name="btnModifica" value="Aggiorna i dati!">  
                 <br>
                 Per poter modificare gli altri dati (compresa la mail) è necessario contattare un segretario!                
@@ -102,9 +106,24 @@ session_start();
         </form>
     </div>';
     echo '<div class="form-center">
+        <form action="modificaPassword.php" method="post">
+            <fieldset>
+                <h3>Modifica la tua password</h3>
+                Vecchia password:
+                <input type="password" name="txtPassword">
+                <br>
+                Nuova password:
+                <input type="password" name="txtPasswordNuova">   
+                <br>                           
+                <input type="submit" name="btnModificaPassword" value="Modifica la tua password!">         
+            </fieldset>
+        </form>
+    </div>';
+    echo '<div class="form-center">
         <form action="aggiungiServizio.php" method="post">
             <fieldset>
                 <h3>Aggiungi dei servizi che puoi offrire!</h3>';
+
     echo "<table>";
     echo "<tr>";
     echo "<th>Servizi attualmente offerti</th><th>Azione</th>";
@@ -115,7 +134,7 @@ session_start();
         echo "<td>" . $array['servDesc'] . '</td><td><form action="eliminaServizio.php" method="post" id="form1"><button type="submit" name="btnElimina" form="form1" value="' . $array['idC'] . '">Elimina</button></form></td>';
         echo "</tr>";
     }
-    echo "</table><br/><br/>";
+    echo "</table><br/>";
     echo '<select name="cmbServizio">';
 
     include("cmbServizio.php");

@@ -24,9 +24,10 @@ else
 
 $telefono = $_POST['txtNumero'];
 $mail = $_SESSION['utente'];
+$via = $_POST['txtVia'];
 
-$stmt = $conn->prepare("UPDATE soci SET nTelefono=? WHERE mail = ?");
-$stmt->bind_param("ss", $telefono, $mail);
+$stmt = $conn->prepare("UPDATE soci SET nTelefono=?, via=? WHERE mail = ?");
+$stmt->bind_param("sss", $telefono, $via, $mail);
 $stmt->execute();
 
 $risultato = $stmt->get_result();

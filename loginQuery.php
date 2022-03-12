@@ -37,11 +37,12 @@
     $checkedUser = $conn->query("SELECT soci.mail as email FROM soci WHERE soci.checked=TRUE");
     $segretarioCheckQuery = $conn->query("SELECT soci.mail AS email FROM soci JOIN capace ON capace.FK_idSocio = soci.idSocio JOIN servizi ON capace.FK_idServizio=servizi.idServizio WHERE servizi.descrizione='Segreteria'");
 
-    while ($row = $checkedUser->fetch_assoc()) {
-        if ($row['email'] == $_SESSION['utente']) {
-            $_SESSION['ruolo'] = 'Approvato';
+    if ($flag)
+        while ($row = $checkedUser->fetch_assoc()) {
+            if ($row['email'] == $_SESSION['utente']) {
+                $_SESSION['ruolo'] = 'Approvato';
+            }
         }
-    }
 
     if (isset($_SESSION['ruolo'])) {
         while ($row = $segretarioCheckQuery->fetch_assoc()) {
