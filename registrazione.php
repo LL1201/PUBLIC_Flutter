@@ -48,6 +48,8 @@
                     ?>
                 </select>
                 <br>
+                <input type="checkbox" id="chkSegretario" name="chkSegretario" value="chkSegretario">
+                <label for="chkSegretario"> Richiedi di essere segretario</label><br>
                 <input type="submit" name="btnRegistrati" value="Registrati">
             </fieldset>
         </form>

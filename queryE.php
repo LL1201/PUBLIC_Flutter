@@ -20,7 +20,21 @@
         header('Location:login.php');
         exit;
     }
-    include_once "connApprovato.php";
+
+    if (!isset($_SESSION['ruolo']))
+        include_once "connLimiti.php";
+    else
+        switch ($_SESSION['ruolo']) {
+            case 'Approvato':
+                include_once "connApprovato.php";
+                break;
+            case 'Segretario':
+                include_once "connSegretario.php";
+                break;
+            default:
+                include_once "connLimiti.php";
+                break;
+        }
 
     $stmt = $conn->prepare("SELECT prestazioni.descrizione AS descrizione, prestazioni.oreP AS ore FROM prestazioni ORDER BY prestazioni.oreP desc");
     $stmt->execute();

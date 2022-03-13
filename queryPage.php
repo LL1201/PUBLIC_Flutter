@@ -37,18 +37,38 @@ session_start();
 <body>
 
     <?php
-    if (!isset($_SESSION['utente'])) //se la sessione non è
+    /*if (!isset($_SESSION['utente'])) //se la sessione non è
     {
         header('Location:login.php');
         exit;
     } else {
         echo "Benvenuto utente " . $_SESSION['utente'];
+    }*/
+
+    if (!isset($_SESSION['utente'])) //se la sessione non è
+    {
+        header('Location:login.php');
+        exit;
     }
+
+    if (!isset($_SESSION['ruolo']))
+        include_once "connLimiti.php";
+    else
+        switch ($_SESSION['ruolo']) {
+            case 'Approvato':
+                include_once "connApprovato.php";
+                break;
+            case 'Segretario':
+                include_once "connSegretario.php";
+                break;
+            default:
+                include_once "connLimiti.php";
+                break;
+        }
 
     if (!isset($_SESSION['ruolo'])) {
         echo "<br>Il tuo account non è ancora stato approvato da un segretario! Non puoi visualizzare la pagina delle query";
     } else {
-        include_once "connApprovato.php";
         echo '<div class="form-center">
         <form action="queryA.php" method="post">
             <fieldset>

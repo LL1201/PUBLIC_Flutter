@@ -22,8 +22,8 @@ else
             break;
     }
 
-$queryInsC = $conn->prepare("INSERT INTO capace(FK_idSocio, FK_idServizio) VALUES((SELECT idSocio FROM soci WHERE mail=?), ?)");
-$queryInsC->bind_param("si", $_SESSION['utente'], $_POST['cmbServizio']);
+$queryInsC = $conn->prepare("UPDATE soci SET richiestaSegretario=1 WHERE mail=?");
+$queryInsC->bind_param("s", $_SESSION['utente']);
 $queryInsC->execute();
 
 header('Location:profilo.php');

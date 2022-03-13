@@ -1,5 +1,5 @@
 <?php
-include_once "connessione.php";
+include_once "connLimiti.php";
 
 $query = "SELECT idZona, descrizione FROM zone";
 $risultato = $conn->query($query);

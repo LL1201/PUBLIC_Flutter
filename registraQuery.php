@@ -24,7 +24,11 @@
     $password = password_hash($_POST['txtPassword'], PASSWORD_DEFAULT);
     $via = $_POST['txtVia'];
     $zona = $_POST['cmbZonaReg'];
+    $richiestaSegretario = 0;
     $checked = false;
+    if (isset($_POST['chkSegretario'])) {
+        $richiestaSegretario = 1;
+    }
 
     $mailCheck = $conn->query("SELECT mail FROM soci");
     while ($row = $mailCheck->fetch_assoc()) {
@@ -34,9 +38,9 @@
 
     if ($flag != true) {
 
-        $stmt = $conn->prepare("INSERT INTO soci (cognome, nome, nTelefono, via, FK_idZona, mail, passwordU, checked)
-        VALUES (?,?,?,?,?,?,?,?)");
-        $stmt->bind_param("ssssissi", $cognome, $nome, $telefono, $via, $zona, $mail, $password, $checked);
+        $stmt = $conn->prepare("INSERT INTO soci (cognome, nome, nTelefono, via, FK_idZona, mail, passwordU, checked, richiestaSegretario)
+        VALUES (?,?,?,?,?,?,?,?,?)");
+        $stmt->bind_param("ssssissii", $cognome, $nome, $telefono, $via, $zona, $mail, $password, $checked, $richiestaSegretario);
         $stmt->execute();
 
         $risultato = $stmt->get_result();
@@ -47,14 +51,6 @@
     } else {
         echo "<p>Mail già inserita!</p>";
     }
-
-    /*if ($risultato == FALSE)     // se ci sono problemi
-    {
-        echo "Query con errori: <br>";
-        echo mysqli_error($conn);     // scrivo eventuali errori
-    }*/
-
-
     ?>
 </body>
 

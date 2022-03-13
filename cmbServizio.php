@@ -1,7 +1,7 @@
 <?php
-include_once "connessione.php";
+include_once "connLimiti.php";
 
-$query = "SELECT idServizio, descrizione FROM servizi";
+$query = "SELECT idServizio, descrizione FROM servizi WHERE idServizio<>8"; //non viene mostrato il servizio segretario
 $risultato = $conn->query($query);
 
 //ciclo per popolare la combo box sull'index

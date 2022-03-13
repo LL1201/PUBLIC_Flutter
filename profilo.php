@@ -119,8 +119,7 @@ session_start();
             </fieldset>
         </form>
     </div>';
-    echo '<div class="form-center">
-        <form action="aggiungiServizio.php" method="post">
+    echo '<div class="form-center">        
             <fieldset>
                 <h3>Aggiungi dei servizi che puoi offrire!</h3>';
 
@@ -131,17 +130,26 @@ session_start();
 
     while ($array = mysqli_fetch_array($risultato, MYSQLI_ASSOC)) {
         echo "<tr>";
-        echo "<td>" . $array['servDesc'] . '</td><td><form action="eliminaServizio.php" method="post" id="form1"><button type="submit" name="btnElimina" form="form1" value="' . $array['idC'] . '">Elimina</button></form></td>';
+        echo "<td>" . $array['servDesc'] . "</td><td>" . '<form action="eliminaServizio.php" method="post"><button type="submit" name="btnElimina" value="' . $array['idC'] . '">Elimina</button></form></td>';
         echo "</tr>";
     }
     echo "</table><br/>";
+    echo '<form action="aggiungiServizio.php" method="post" id="formAggiungi">';
     echo '<select name="cmbServizio">';
 
     include("cmbServizio.php");
 
     echo '</select>';
-    echo '<input type="submit" name="btnAggiungi" value="Aggiungi">';
-    echo '</fieldset>
+    echo '<input form="formAggiungi" type="submit" name="btnAggiungi" value="Aggiungi"></form>';
+    echo '</fieldset>        
+    </div>';
+    if ($_SESSION['ruolo'] != 'Segretario')
+        echo '<div class="form-center">
+        <form action="richiediSegretario.php" method="post">
+            <fieldset>
+                <h3>Richiedi di essere segretario!</h3>                                          
+                <input type="submit" name="richiediSegretario.php" value="Richiedi">         
+            </fieldset>
         </form>
     </div>';
     ?>

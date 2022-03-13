@@ -20,7 +20,21 @@
         header('Location:login.php');
         exit;
     }
-    include_once "connApprovato.php";
+
+    if (!isset($_SESSION['ruolo']))
+        include_once "connLimiti.php";
+    else
+        switch ($_SESSION['ruolo']) {
+            case 'Approvato':
+                include_once "connApprovato.php";
+                break;
+            case 'Segretario':
+                include_once "connSegretario.php";
+                break;
+            default:
+                include_once "connLimiti.php";
+                break;
+        }
 
     $stmt = $conn->prepare("SELECT s.*, SUM(oreP) AS oreRicevute FROM soci s, prestazioni p
     WHERE s.idSocio=p.FK_idSocioRiceve GROUP BY s.idSocio HAVING oreRicevute > (SELECT SUM(oreP) FROM prestazioni p WHERE s.idSocio=p.FK_idSocioOffre)");
