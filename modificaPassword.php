@@ -34,14 +34,10 @@ while ($row = $passwordCheck->fetch_assoc()) {
         $stmt = $conn->prepare("UPDATE soci SET passwordU=? WHERE mail=?");
         $stmt->bind_param("ss", $passwordNuova, $mail);
         $stmt->execute();
+        echo 'Password cambiata';
         break;
     }
 }
 
 if (!$flag)
     echo 'Password errata. Impossibile modificare la password.';
-
-//$risultato = $stmt->get_result();
-//echo $risultato;
-
-//header('Location:profilo.php');
