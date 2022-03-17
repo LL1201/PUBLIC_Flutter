@@ -16,6 +16,7 @@ while(cap.isOpened()):
 
     for (x,y,w,h) in faces:
         cv2.rectangle(frame, (x,y), (x+w,y+h), (255,255,0), 1)
+        print('Ciao')
 
     cv2.imshow("Webcam", frame)
     k = cv2.waitKey(1)
