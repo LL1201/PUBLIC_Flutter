@@ -27,7 +27,7 @@ public class DemoServer extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		response.getWriter().append("Served at: ").append(request.getContextPath());
+		response.getWriter().append("<html><title>Supersballo</title><head><h1>Supersballo Web App</h1></head><hr><body>Powered by me :)</body></html>");
 	}
 
 	/**
