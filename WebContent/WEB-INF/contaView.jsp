@@ -10,9 +10,40 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
 <link href='css/bootstrapcss/bootstrap.min.css' rel='stylesheet' type='text/css'>
+
 <script src='js/jquery-3.6.0.min.js' type='text/javascript'></script>
 <script src='js/bootstrapjs/bootstrap.bundle.min.js' type='text/javascript'></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.bundle.min.js" integrity="sha384-b5kHyXgcpbZJO/tY9Ul7kGkf1S0CWuKcCD38l8YkeH8z8QjE0GmW1gYU5S9FOnJ0" crossorigin="anonymous"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+<script type="text/javascript">
+
+$(document).ready(function(){
+	
+	// Show dialog to confirm deleting record:
+	myModalDelete = new bootstrap.Modal(document.getElementById('myModalDelete'), {
+		backdrop: 'static',  // do not close modal if user click outside
+		keyboard: false   // cannot even press esc from keyboard
+	}) 
+	formDelete = document.getElementById("delete-record-form");
+	formRecord = document.getElementById("delete-record-form");
+	
+	$(document).on("click", "#deleteRecord", function () {
+		//alert("Elimina");
+		myModalDelete.show();
+	});
+	
+	$(document).on("click", "#delete-form-submit", function () {
+		//alert("Elimina");
+		formDelete.submit();		
+		myModalDelete.dismiss();
+	});	
+});
+
+</script>
+
 
 <title>Conta sballo</title>
 </head>
@@ -32,10 +63,35 @@
         <td>${visitor.ip}</td>
         <td>${visitor.port}</td>
         <td>${visitor.date}</td>
-        <td><form action=/DemoServer/contaJSP method=get><input name=resetItem type=submit value="Elimina"><input type="hidden" name="submit_id" value="${visitor.id}"/></form></td>
+        <td><form action=/DemoServer/contaJSP method=get><button type="button" name=resetItem id="deleteRecord" class="btn btn-primary">Elimina</button><input type="hidden" name="submit_id" value="${visitor.id}"/></form></td>
     </tr>    
 </c:forEach>
 </table>
+
+
+<div id="myModalDelete" class="modal" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false" >
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Conferma</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <p id="modal-message">Sei sicuro di voler uscire?</p>
+        <form id="delete-record-form" method="post">
+          <input hidden type="text" name="id" id="id" value="${variable}"/>
+          <!--button id="your-id">submit</button-->
+		</form>  
+        
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+        <button type="button" class="btn btn-primary" data-bs-dismiss="modal" id="delete-form-submit">Conferma l'eliminazione</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 
 </body>
 </html>
