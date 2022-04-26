@@ -1,6 +1,6 @@
 <!--//Loner Luca
 //5B IA
-//07/04/2022-->
+//21/04/2022-->
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
@@ -27,7 +27,7 @@ $(document).ready(function(){
 		backdrop: 'static',  // do not close modal if user click outside
 		keyboard: false   // cannot even press esc from keyboard
 	}) 
-	formDelete = document.getElementById("delete-record-form");
+	formDelete = document.getElementById("delete-form");
 	formRecord = document.getElementById("delete-record-form");
 	
 	$(document).on("click", "#deleteRecord", function () {
@@ -35,11 +35,24 @@ $(document).ready(function(){
 		myModalDelete.show();
 	});
 	
-	$(document).on("click", "#delete-form-submit", function () {
+	$(document).on("click", "#deleteAll", function () {
 		//alert("Elimina");
-		formDelete.submit();		
+		myModalDelete.show();
+	});
+	
+	$(document).on("click", "#deleteRecord-form-submit", function () {
+		//alert("Elimina");
+		//formDelete.submit();
+		formRecord.submit();
 		myModalDelete.dismiss();
 	});	
+	
+	$(document).on("click", "#delete-form-submit", function () {
+		//alert("Elimina");
+		formDelete.submit();
+		//formRecord.submit();
+		myModalDelete.dismiss();
+	});
 });
 
 </script>
@@ -50,7 +63,8 @@ $(document).ready(function(){
 <body>
 <h2>Wilkommen</h2>
 <h4>Sei il visitatore numero ${count}</h4>
-<form action=/DemoServer/contaJSP method=get><input name=reset type=submit value=Reset></form>
+<form action=/DemoServer/contaJSP method=get><input name=reset type=submit value=reset></form>
+<form action=/DemoServer/contaJSP method=get id="delete-form-submit"><button type="button" name=reset id="deleteAll" class="btn btn-primary" value=reset>Elimina</button><input type="hidden" name="reset" value="reset"/></form>
 <table class="table table-striped table-hover">
 <tr>
 	    <th>IP</th>
@@ -86,7 +100,7 @@ $(document).ready(function(){
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-        <button type="button" class="btn btn-primary" data-bs-dismiss="modal" id="delete-form-submit">Conferma l'eliminazione</button>
+        <button type="button" class="btn btn-primary" data-bs-dismiss="modal" id="deleteRecord-form-submit">Conferma l'eliminazione</button>
       </div>
     </div>
   </div>

@@ -1,6 +1,6 @@
 //Loner Luca
 //5B IA
-//07/04/2022
+//21/04/2022
 package demoserver;
 
 import java.io.IOException;
@@ -55,19 +55,19 @@ public class contaJSP extends HttpServlet {
 			list.clear();
 			/*String redirectURL = "localhost:8080/DemoServer/contaJSP";*/
 			resetList=true;
-		    response.sendRedirect("/DemoServer/contaJSP");
+		    //response.sendRedirect("/DemoServer/contaJSP");
 		    //request.getRequestDispatcher("/DemoServer/contaView.jsp").include( request, response);
-		    request.setAttribute("count", count);
-			request.setAttribute("list", list);			
+		    //request.setAttribute("count", count);
+			//request.setAttribute("list", list);			
 			}
 		else if(submitId!=null){
 			//resetItem.substring(8, resetItem.length());
 			list.removeIf(n -> (n.id == Integer.parseInt(submitId)));
 			resetList=true;	
-			response.sendRedirect("/DemoServer/contaJSP");
+			//response.sendRedirect("/DemoServer/contaJSP");
 		    //request.getRequestDispatcher("/DemoServer/contaView.jsp").include( request, response);
-		    request.setAttribute("count", count);
-			request.setAttribute("list", list);			
+		    //request.setAttribute("count", count);
+			//request.setAttribute("list", list);			
 		}
 		else{
 			if(!resetList){ 
