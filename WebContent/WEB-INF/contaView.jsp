@@ -28,7 +28,6 @@ $(document).ready(function(){
 		keyboard: false   // cannot even press esc from keyboard
 	}) 
 	formDelete = document.getElementById("delete-form");
-	formRecord = document.getElementById("delete-record-form");
 	
 	$(document).on("click", "#deleteRecord", function () {
 		//alert("Elimina");
@@ -40,17 +39,9 @@ $(document).ready(function(){
 		myModalDelete.show();
 	});
 	
-	$(document).on("click", "#deleteRecord-form-submit", function () {
-		//alert("Elimina");
-		//formDelete.submit();
-		formRecord.submit();
-		myModalDelete.dismiss();
-	});	
-	
 	$(document).on("click", "#delete-form-submit", function () {
 		//alert("Elimina");
-		formDelete.submit();
-		//formRecord.submit();
+		formDelete.submit();		
 		myModalDelete.dismiss();
 	});
 });
@@ -63,8 +54,7 @@ $(document).ready(function(){
 <body>
 <h2>Wilkommen</h2>
 <h4>Sei il visitatore numero ${count}</h4>
-<form action=/DemoServer/contaJSP method=get><input name=reset type=submit value=reset></form>
-<form action=/DemoServer/contaJSP method=get id="delete-form-submit"><button type="button" name=reset id="deleteAll" class="btn btn-primary" value=reset>Elimina</button><input type="hidden" name="reset" value="reset"/></form>
+<form action=/DemoServer/contaJSP method=get id="delete-form"><button type="button" name=reset id="deleteAll" class="btn btn-primary" value=reset>Elimina</button><input type="hidden" name="reset" value="reset"/></form>
 <table class="table table-striped table-hover">
 <tr>
 	    <th>IP</th>
@@ -77,7 +67,7 @@ $(document).ready(function(){
         <td>${visitor.ip}</td>
         <td>${visitor.port}</td>
         <td>${visitor.date}</td>
-        <td><form action=/DemoServer/contaJSP method=get><button type="button" name=resetItem id="deleteRecord" class="btn btn-primary">Elimina</button><input type="hidden" name="submit_id" value="${visitor.id}"/></form></td>
+        <td><form action=/DemoServer/contaJSP method=get><button type="submit" name=resetItem class="btn btn-primary">Elimina</button><input type="hidden" name="submit_id" value="${visitor.id}"/></form></td>
     </tr>    
 </c:forEach>
 </table>
@@ -100,7 +90,7 @@ $(document).ready(function(){
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-        <button type="button" class="btn btn-primary" data-bs-dismiss="modal" id="deleteRecord-form-submit">Conferma l'eliminazione</button>
+        <button type="button" class="btn btn-primary" data-bs-dismiss="modal" id="delete-form-submit">Conferma l'eliminazione</button>
       </div>
     </div>
   </div>
