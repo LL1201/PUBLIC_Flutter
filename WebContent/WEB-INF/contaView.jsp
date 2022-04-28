@@ -29,11 +29,6 @@ $(document).ready(function(){
 	}) 
 	formDelete = document.getElementById("delete-form");
 	
-	$(document).on("click", "#deleteRecord", function () {
-		//alert("Elimina");
-		myModalDelete.show();
-	});
-	
 	$(document).on("click", "#deleteAll", function () {
 		//alert("Elimina");
 		myModalDelete.show();
