@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <fieldset> 
+        <form action="paginaA.php" method="post">
+            <legend align="left">Seleziona una tabella da visualizzare:</legend>
+            <select name="cmbTabella">
+                <option value="clienti">Clienti</option>
+                <option value="modelli">Modelli</option>
+                <option value="vendite">Vendite</option>
+            </select>
+            
+            <input type="submit" name="btnVisualizza" value="Visualizza">
+        </form>
+    </fieldset> 
+    <fieldset>
+        <form action="paginaB.php" method="post">
+            <legend align="left">Seleziona una coppia di tabelle da visualizzare:</legend>
+            <select name="cmbTabellaJoin">
+                <option value="clientiVendite">Clienti - Vendite</option>
+                <option value="modelliVendite">Modelli - Vendite</option>                
+            </select>
+    
+            <input type="submit" name="btnVisualizza" value="Visualizza">
+        </form>
+    </fieldset>
+    <fieldset>
+        <form action="paginaC.php" method="post">
+            <legend align="left">Seleziona una tipologia di filtro:</legend>
+            <select name="cmbTabella">
+                <option value="clienti">Cerca cognome e nome dei clienti e visualizza tutti gli acquisti</option>
+                <option value="modelli">Inserisci una data e visualizza gli acquisti in quella data</option>
+                <option value="vendite">Inserisci due date e visualizza gli acquisti effettuati tra le due</option>
+                <option value="vendite">Inserisci un prezzo e visualizza tutte le vendite con prezzo superiore</option>
+                <option value="vendite">Inserisci la descrizione del modello e conta quante vendite sono state fatte</option>
+            </select>
+    
+            <input type="submit" name="btnVisualizza" value="Visualizza">
+        </form>
+    </fieldset>
+</body>
+
+</html>
