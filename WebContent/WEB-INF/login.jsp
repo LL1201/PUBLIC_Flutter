@@ -22,6 +22,9 @@
 </head>
 <body>
 
+<div class="row justify-content-center">
+<div class="col-8">
+
 <form>
   <div class="mb-3">
     <label for="exampleInputEmail1" class="form-label">Email address</label>
@@ -38,6 +41,9 @@
   </div>
   <button type="submit" class="btn btn-primary">Login</button>
 </form>
+</div>
+</div>
+
 
 </body>
 </html>

@@ -40,20 +40,31 @@ public class FormLogin extends HttpServlet {
 		
 		
 		if(user!=null && password!=null){
-			disp=request.getRequestDispatcher("/WEB-INF/logout.jsp");
+			//System.out.println("ZIO PORCONE");
+			response.sendRedirect("/DemoServer/FormLogin");
 			request.setAttribute("user", user);	
 			session = request.getSession();
 			session.setMaxInactiveInterval(60);
 			session.setAttribute("logged", true);
-			session.setAttribute("user", user);
-			disp.forward(request, response);
+			session.setAttribute("user", user);	
+			disp=request.getRequestDispatcher("/WEB-INF/logout.jsp");
+			//disp.forward(request, response);
 		}else if(logout!=null){
-			disp = request.getRequestDispatcher("/WEB-INF/login.jsp");	
-			disp.forward(request, response);
+			System.out.println("ZIO PORCONE");
+			response.sendRedirect("/DemoServer/FormLogin");
+			disp = request.getRequestDispatcher("/WEB-INF/login.jsp");			
+			//disp.forward(request, response);
+			try{
+				session.invalidate();
+			}catch(Exception e){
+				System.out.println("Catch Borsatti");
+				}
+			
 		}else{
-			if(session.getAttribute("logged")==null){
+			if(null == session){
 				disp = request.getRequestDispatcher("/WEB-INF/login.jsp");
-			disp.forward(request, response);}
+				disp.forward(request, response);
+			}
 			else if((boolean) session.getAttribute("logged")){
 				disp=request.getRequestDispatcher("/WEB-INF/logout.jsp");
 				request.setAttribute("user", (String) session.getAttribute("user"));
