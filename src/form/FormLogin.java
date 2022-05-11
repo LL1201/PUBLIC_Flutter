@@ -51,16 +51,14 @@ public class FormLogin extends HttpServlet {
 		if(user!=null && password!=null){
 			try {
 				db.connect();
-				if(db.login(user, password)){			
-					//System.out.println("ZIO PORCONE");
+				if(db.login(user, password)){		
 					response.sendRedirect("/DemoServer/FormLogin");
 					request.setAttribute("user", user);						
 					session.setAttribute("logged", true);
-					session.setAttribute("user", user);	
-					disp=request.getRequestDispatcher("/WEB-INF/logout.jsp");
-				}else{
-					response.sendRedirect("/DemoServer/FormLogin");
+					session.setAttribute("user", user);
+				}else{					
 					disp = request.getRequestDispatcher("/WEB-INF/login.jsp");
+					disp.forward(request, response);
 				}
 				db.disconnect();
 			} catch (SQLException e) {
